@@ -1,0 +1,4 @@
+message IRMessage
+{
+    repeated uint32 c=1;
+}
