@@ -38,6 +38,7 @@
 
 /* contiki */
 #include "contiki.h"
+#include "contiki-conf.h" //trm
 #include "dev/button-sensor.h"
 #include "net/rime/rimeaddr.h"
 #include "net/netstack.h"

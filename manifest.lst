@@ -1,0 +1,29 @@
+# Contiki manifest
+
+
+#Google Protobuf 
+common/protobuf-2.4.1.tar.bz2:common/protobuf-2.4.1.tar.bz2
+common/protobuf-2.4.1.tar.bz2.SETUP:common/protobuf-2.4.1.tar.bz2.SETUP
+
+#Google Protobuf for ANSI C (must go after Google Protobuf)
+common/protobuf-c-0.15.tar.gz:common/protobuf-c-0.15.tar.gz
+common/protobuf-c-0.15.tar.gz.SETUP:common/protobuf-c-0.15.tar.gz.SETUP
+
+#configure MC13224 complier
+tools/mc13224/arm-2008q3-66-arm-none-eabi.bin:tools-mc13224/arm-2008q3-66-arm-none-eabi.bin
+tools/mc13224/arm-2008q3-66-arm-none-eabi.bin.SETUP:tools-mc13224/arm-2008q3-66-arm-none-eabi.bin.SETUP
+
+#configure debug environment 
+tools/mc13224/gdb-7.4.tar.gz:tools-mc13224/gdb-7.4.tar.gz
+tools/mc13224/gdb-7.4.tar.gz.SETUP:tools-mc13224/gdb-7.4.tar.gz.SETUP
+tools/mc13224/openocd-0.5.0.tar.bz2:tools-mc13224/openocd-0.5.0.tar.bz2
+tools/mc13224/openocd-0.5.0.tar.bz2.SETUP:tools-mc13224/openocd-0.5.0.tar.bz2.SETUP
+tools/mc13224/openocd.cfg.SETUP:tools-mc13224/openocd.cfg.SETUP
+tools/mc13224/openocd.cfg:tools-mc13224/openocd.cfg
+
+#install hardware oscope debugger
+tools/mc13224/ols-scope.tar.gz:tools-mc13224/ols-scope.tar.gz
+tools/mc13224/ols-scope.tar.gz.SETUP:tools-mc13224/ols-scope.tar.gz.SETUP
+
+#compile needed mc13224 stuff
+tools/mc13224/compile-rpl-border-router.SETUP:tools-mc13224/compile-rpl-border-router.SETUP
