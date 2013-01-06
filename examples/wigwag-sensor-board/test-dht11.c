@@ -1,8 +1,4 @@
 /*
- * Copyright (c) 2010, Mariano Alvira <mar@devl.org> and other contributors
- * to the MC1322x project (http://mc1322x.devl.org)
- * All rights reserved.
- *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -27,36 +23,55 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
- * This file is part of libmc1322x: see http://mc1322x.devl.org
- * for details. 
- *
+ * This file is part of the Contiki operating system.
  *
  */
-#ifndef BOARD_REDBEE_ECONOTAG_H
-#define BOARD_REDBEE_ECONOTAG_H
 
-#define GPIO_LED_RED   GPIO_44
-#define GPIO_LED_GREEN GPIO_45
-#define GPIO_LED_BLUE  GPIO_43	/* don't have a blue LED so we use IO43 */
 
-/* old defs. don't use these */
-/* remove these someday */
-#define LED_RED   44
-#define LED_GREEN 45
-#define LED_BLUE  43	/* don't have a blue LED so we use IO43 */
+#include <stdio.h>
+#include "contiki.h"
+#include "dev/button-sensor2.h"
+#include "dev/dht11.h"
+#include <stdio.h>
+#include "gpio.h"
+char test;
 
-/* XTAL TUNE parameters */
-/* see http://devl.org/pipermail/mc1322x/2009-December/000162.html */
-/* for details about how to make this measurement */
 
-/* Econotag also needs an addtional 12pf on board */
-/* Coarse tune: add 4pf */
-#define CTUNE_4PF 1
-/* Coarse tune: add 0-15 pf (CTUNE is 4 bits) */
-#define CTUNE 11
-/* Fine tune: add FTUNE * 156fF (FTUNE is 5bits) */
-#define FTUNE 7
 
-#include <std_conf.h>
 
-#endif
+
+
+/*---------------------------------------------------------------------------*/
+PROCESS(test_button_process, "Econo Test button with DHT11");
+AUTOSTART_PROCESSES(&test_button_process);
+/*---------------------------------------------------------------------------*/
+static uint8_t active;
+
+PROCESS_THREAD(test_button_process, ev, data)
+{
+  PROCESS_BEGIN();
+  active = 0;
+  DHT11_init_Write();
+  SENSORS_ACTIVATE(button_sensor);
+
+
+  while(1) {
+
+    PROCESS_WAIT_EVENT_UNTIL(ev == sensors_event &&
+			     data == &button_sensor);
+    printf("Oh boy here we go\n");
+    DHT11_test2();
+//   	if(!DHT11_handshake()) printf("faild handshake\n");
+//   	else printf ("success handshake\n");
+
+   //	DHT11_test();
+   	//else printf("success handshake");
+  //test = DHT11_Fetch();
+  //  test =0;
+ //  	if (test) DHT11_output();
+ //   else printf("test failed\n");
+   	DHT11_init_Write();
+  }
+  PROCESS_END();
+}
+/*---------------------------------------------------------------------------*/

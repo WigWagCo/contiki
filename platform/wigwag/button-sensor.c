@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2010, Mariano Alvira <mar@devl.org> and other contributors
- * to the MC1322x project (http://mc1322x.devl.org)
+ * to the MC1322x project (http://mc1322x.devl.org) and Contiki.
+ *
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,36 +28,65 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
- * This file is part of libmc1322x: see http://mc1322x.devl.org
- * for details. 
+ * This file is part of the Contiki OS.
  *
- *
+ * $Id: button-sensor.c,v 1.1 2010/06/09 14:46:30 maralvira Exp $
  */
-#ifndef BOARD_REDBEE_ECONOTAG_H
-#define BOARD_REDBEE_ECONOTAG_H
 
-#define GPIO_LED_RED   GPIO_44
-#define GPIO_LED_GREEN GPIO_45
-#define GPIO_LED_BLUE  GPIO_43	/* don't have a blue LED so we use IO43 */
+#include "lib/sensors.h"
+#include "dev/button-sensor.h"
 
-/* old defs. don't use these */
-/* remove these someday */
-#define LED_RED   44
-#define LED_GREEN 45
-#define LED_BLUE  43	/* don't have a blue LED so we use IO43 */
+#include "mc1322x.h"
 
-/* XTAL TUNE parameters */
-/* see http://devl.org/pipermail/mc1322x/2009-December/000162.html */
-/* for details about how to make this measurement */
+#include <signal.h>
 
-/* Econotag also needs an addtional 12pf on board */
-/* Coarse tune: add 4pf */
-#define CTUNE_4PF 1
-/* Coarse tune: add 0-15 pf (CTUNE is 4 bits) */
-#define CTUNE 11
-/* Fine tune: add FTUNE * 156fF (FTUNE is 5bits) */
-#define FTUNE 7
+const struct sensors_sensor button_sensor;
 
-#include <std_conf.h>
+static struct timer debouncetimer;
+static int status(int type);
 
-#endif
+void kbi4_isr(void) {
+	if(timer_expired(&debouncetimer)) {
+		timer_set(&debouncetimer, CLOCK_SECOND / 4);
+		sensors_changed(&button_sensor);
+	}
+	clear_kbi_evnt(4);
+}
+
+static int
+value(int type)
+{
+	return GPIO->DATA.GPIO_26 || !timer_expired(&debouncetimer);
+}
+
+static int
+configure(int type, int c)
+{
+	switch (type) {
+	case SENSORS_ACTIVE:
+		if (c) {
+			if(!status(SENSORS_ACTIVE)) {
+				timer_set(&debouncetimer, 0);
+				enable_irq_kbi(4);
+			}
+		} else {
+			disable_irq_kbi(4);
+		}
+		return 1;
+	}
+	return 0;
+}
+
+static int
+status(int type)
+{
+	switch (type) {
+	case SENSORS_ACTIVE:
+	case SENSORS_READY:
+		return bit_is_set(*CRM_WU_CNTL, 20); /* check if kbi4 irq is enabled */
+	}
+	return 0;
+}
+
+SENSORS_SENSOR(button_sensor, BUTTON_SENSOR,
+	       value, configure, status);

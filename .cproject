@@ -53,7 +53,7 @@
 		<buildTargets>
 			<target name=".clean" path="examples/hello-world" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 				<buildCommand>make</buildCommand>
-				<buildArguments>clean TARGET=econotag</buildArguments>
+				<buildArguments>clean TARGET=wigwag -k</buildArguments>
 				<buildTarget/>
 				<stopOnError>true</stopOnError>
 				<useDefaultCommand>false</useDefaultCommand>
@@ -61,7 +61,15 @@
 			</target>
 			<target name=".make" path="examples/hello-world" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 				<buildCommand>make</buildCommand>
-				<buildArguments>TARGET=econotag -k</buildArguments>
+				<buildArguments>TARGET=wigwag -k</buildArguments>
+				<buildTarget/>
+				<stopOnError>true</stopOnError>
+				<useDefaultCommand>false</useDefaultCommand>
+				<runAllBuilders>false</runAllBuilders>
+			</target>
+			<target name=".make" path="examples/wigwag-sensor-board" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+				<buildCommand>make</buildCommand>
+				<buildArguments>-j 8 TARGET=wigwag -k</buildArguments>
 				<buildTarget/>
 				<stopOnError>true</stopOnError>
 				<useDefaultCommand>false</useDefaultCommand>

@@ -1,7 +1,4 @@
 /*
- * Copyright (c) 2010, Mariano Alvira <mar@devl.org> and other contributors
- * to the MC1322x project (http://mc1322x.devl.org)
- * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -27,36 +24,32 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
- * This file is part of libmc1322x: see http://mc1322x.devl.org
- * for details. 
- *
- *
  */
-#ifndef BOARD_REDBEE_ECONOTAG_H
-#define BOARD_REDBEE_ECONOTAG_H
 
-#define GPIO_LED_RED   GPIO_44
-#define GPIO_LED_GREEN GPIO_45
-#define GPIO_LED_BLUE  GPIO_43	/* don't have a blue LED so we use IO43 */
+/**
+ * \file
+ *		   Tri-color-led
+ * \author
+ *         Travis McCollum <travis@wigwag.com>
+ */
 
-/* old defs. don't use these */
-/* remove these someday */
-#define LED_RED   44
-#define LED_GREEN 45
-#define LED_BLUE  43	/* don't have a blue LED so we use IO43 */
+/*
+ array[0]=30;		 			Array length always at pos 0
+ array[1]=WW_TRICOLOR_LED; 		hardware device id
+ array[2]=0;					red [0:off|1:on]
+ array[3]=0;					blue [0:off|1:on]
+ array[4]=0;					green [0:off|1:on]
+*/
 
-/* XTAL TUNE parameters */
-/* see http://devl.org/pipermail/mc1322x/2009-December/000162.html */
-/* for details about how to make this measurement */
+//#include "gpio-util.h"
 
-/* Econotag also needs an addtional 12pf on board */
-/* Coarse tune: add 4pf */
-#define CTUNE_4PF 1
-/* Coarse tune: add 0-15 pf (CTUNE is 4 bits) */
-#define CTUNE 11
-/* Fine tune: add FTUNE * 156fF (FTUNE is 5bits) */
-#define FTUNE 7
 
-#include <std_conf.h>
+
+#ifndef __TRICOLOR_LED_H__
+#define __TRICOLOR_LED_H__
+
+void tricolor_init(void);
+void tricolor_set(uint8_t red, uint8_t green, uint8_t blue);
+void tricolor_process_array(uint32_t *ray);
 
 #endif
