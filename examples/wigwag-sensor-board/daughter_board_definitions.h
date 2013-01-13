@@ -5,7 +5,9 @@
 #define LEDblue tricolor_LEDblue
 #define LEDgreen tricolor_LEDgreen
 
-
+#define tricolor_LEDred BTCK
+#define tricolor_LEDgreen SSIRX
+#define tricolor_LEDblue SSITX
 
 
 #endif

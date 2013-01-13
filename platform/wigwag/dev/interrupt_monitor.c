@@ -65,9 +65,9 @@ static int status(int type);
 void kbi4_isr(void) {
 //	printf("kbi4_isr activated\n");
 	if(timer_expired(&debouncetimer)) {
-//		printf("kbi4 if state\n");
+		printf("kbi4 if state\n");
 		timer_set(&debouncetimer, CLOCK_SECOND / 4);
-		//sensors_changed(&plunger);
+		sensors_changed(&button);
 	}
 
 //	clear_kbi_evnt(KBINUM);	//does same thing as below, old version
@@ -80,8 +80,8 @@ void kbi4_isr(void) {
 static int
 value(int type)
 {
-//	printf("button: value called");
-	return GPIO_READ(KBI_4) || !timer_expired(&debouncetimer);
+	printf("button: value called");
+	return GPIO_READ(KBI4) || !timer_expired(&debouncetimer);
 }
 
 static int
@@ -117,7 +117,7 @@ configure(int type, int c)
 static int
 status(int type)
 {
-//	printf("button status");
+	printf("button status");
 	switch (type) {
 	case SENSORS_ACTIVE:
 	case SENSORS_READY:

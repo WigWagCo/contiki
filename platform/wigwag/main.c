@@ -39,7 +39,7 @@
 /* contiki */
 #include "contiki.h"
 
-#include "dev/button-sensor.h"
+//#include "dev/button-sensor.h"
 #include "net/rime/rimeaddr.h"
 #include "net/netstack.h"
 
@@ -50,8 +50,9 @@
 
 /* econotag */
 #include "platform_prints.h"
+#include "include/interrupt_monitor.h"
 
-SENSORS(&button_sensor);
+SENSORS(&button);
 
 #ifndef M12_CONF_SERIAL
 #define M12_SERIAL 0x000000

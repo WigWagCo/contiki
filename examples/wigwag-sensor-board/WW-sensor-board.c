@@ -43,6 +43,7 @@
 #include "include/tricolor_led.h"
 #include "gpio-util.h"
 #include "include/interrupt_monitor.h"
+#include "include/timers.h"
 //#include "dev/light-sensor.h"
 #include <string.h>
 #include <stdlib.h>

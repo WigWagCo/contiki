@@ -53,6 +53,7 @@
 
 // GPIO to Function Alias macros:
 
+
 #define ADC0 GPIO_30
 #define ADC1 GPIO_31
 #define ADC2 GPIO_32
@@ -74,11 +75,12 @@
 #define U1RX GPIO_15
 #define U1TX GPIO_14
 #define SDA GPIO_13
+//trm
 #define SCL GPIO_12
-#define TMR3 GPIO_11
-#define TMR2 GPIO_10
-#define TMR1 GPIO_09
-#define TMR0 GPIO_08
+#define TM3 GPIO_11
+#define TM2 GPIO_10
+#define TM1 GPIO_09
+#define TM0 GPIO_08
 #define SCK GPIO_07
 #define MOSI GPIO_06
 #define MISO GPIO_05
