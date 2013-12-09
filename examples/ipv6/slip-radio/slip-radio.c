@@ -59,7 +59,15 @@ uint8_t packet_ids[16];
 int packet_pos;
 
 static int slip_radio_cmd_handler(const uint8_t *data, int len);
+
+#if CONTIKI_TARGET_NOOLIBERRY
+int cmd_handler_rf230(const uint8_t *data, int len);
+#elif CONTIKI_TARGET_ECONOTAG
+int cmd_handler_mc1322x(const uint8_t *data, int len);
+#else /* Leave CC2420 as default */
 int cmd_handler_cc2420(const uint8_t *data, int len);
+#endif /* CONTIKI_TARGET */
+
 /*---------------------------------------------------------------------------*/
 #ifdef CMD_CONF_HANDLERS
 CMD_HANDLERS(CMD_CONF_HANDLERS);
@@ -169,6 +177,7 @@ init(void)
   packet_pos = 0;
 }
 /*---------------------------------------------------------------------------*/
+#if !SLIP_RADIO_CONF_NO_PUTCHAR
 #undef putchar
 int
 putchar(int c)
@@ -196,6 +205,7 @@ putchar(int c)
   }
   return c;
 }
+#endif
 /*---------------------------------------------------------------------------*/
 PROCESS(slip_radio_process, "Slip radio process");
 AUTOSTART_PROCESSES(&slip_radio_process);

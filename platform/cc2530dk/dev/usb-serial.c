@@ -68,22 +68,25 @@ static struct {
 static const struct {
   uint8_t size;
   uint8_t type;
-  uint16_t string[10];
+  uint16_t string[17];
 } string_manufacturer = {
   sizeof(string_manufacturer),
   3,
-  { 'E', 'P', 'F', 'L', '-', 'L', 'S', 'R', 'O', '1' }
+  {
+    'T', 'e', 'x', 'a', 's', ' ',
+    'I', 'n', 's', 't', 'r', 'u', 'm', 'e', 'n', 't', 's'
+  }
 };
 
 static const struct {
   uint8_t size;
   uint8_t type;
-  uint16_t string[18];
+  uint16_t string[17];
 } string_product = {
   sizeof(string_product),
   3, {
     'C', 'C', '2', '5', '3', '1', ' ',
-    'D', 'e', 'v', 'e', 'l', '-', 'B', 'o', 'a', 'r', 'd'
+    'U', 'S', 'B', ' ', 'D', 'o', 'n', 'g', 'l', 'e'
   }
 };
 /*---------------------------------------------------------------------------*/
@@ -170,6 +173,16 @@ do_work(void)
     enabled = 0;
   }
 
+  events = usb_cdc_acm_get_events();
+  if(events & USB_CDC_ACM_LINE_STATE) {
+    uint8_t line_state = usb_cdc_acm_get_line_state();
+    if(line_state & USB_CDC_ACM_DTE) {
+      enabled = 1;
+    } else {
+      enabled = 0;
+    }
+  }
+
   if(!enabled) {
     return;
   }
@@ -254,6 +267,7 @@ PROCESS_THREAD(usb_serial_process, ev, data)
   usb_setup();
   usb_cdc_acm_setup();
   usb_set_global_event_process(&usb_serial_process);
+  usb_cdc_acm_set_event_process(&usb_serial_process);
   usb_set_ep_event_process(EPIN, &usb_serial_process);
   usb_set_ep_event_process(EPOUT, &usb_serial_process);
 

@@ -39,8 +39,8 @@
  *
  *
  */
-#ifndef __UIPLIB_H__
-#define __UIPLIB_H__
+#ifndef UIPLIB_H_
+#define UIPLIB_H_
 
 #include "net/uip.h"
 
@@ -66,10 +66,14 @@
  * \retval 0 If the IP address could not be parsed.
  * \retval Non-zero If the IP address was parsed. 
  */
-CCIF int uiplib_ipaddrconv(const char *addrstr, uip_ipaddr_t *addr);
+#if UIP_CONF_IPV6
+#define uiplib_ipaddrconv uiplib_ip6addrconv
+#else /* UIP_CONF_IPV6 */
+#define uiplib_ipaddrconv uiplib_ip4addrconv
+#endif /* UIP_CONF_IPV6 */
 
 CCIF int uiplib_ip4addrconv(const char *addrstr, uip_ip4addr_t *addr);
 CCIF int uiplib_ip6addrconv(const char *addrstr, uip_ip6addr_t *addr);
 /** @} */
 
-#endif /* __UIPLIB_H__ */
+#endif /* UIPLIB_H_ */
